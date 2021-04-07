@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace Day_23_Cab_Invoice_Generator
 {
     // Class to compute the total fare when the user passes the distance and time of the fare and generate invoice
@@ -52,6 +51,29 @@ namespace Day_23_Cab_Invoice_Generator
             }
             // Math function to get the maximum
             return Math.Max(totalFare, MINIMUM_FARE);
+        }
+        public InvoiceSummary CalculateFare(Ride[] rides)
+        {
+            double totalFare = 0;
+            // Exception handling for the invalid  distance and time
+            try
+            {
+                // Using foreach loop to take one ride each time
+                foreach (Ride ride in rides)
+                {
+                    // returning total fare
+                    totalFare += this.CalculateFare(ride.distance, ride.time);
+                }
+            }
+            catch (CabInvoiceException)
+            {
+                if (rides == null)
+                {
+                    throw new CabInvoiceException(CabInvoiceException.ExceptionType.NULL_RIDES, "Rides passed are null..");
+                }
+            }
+            // returning invoice summary which has total fare and number of rides
+            return new InvoiceSummary(totalFare, rides.Length);
         }
     }
 }
