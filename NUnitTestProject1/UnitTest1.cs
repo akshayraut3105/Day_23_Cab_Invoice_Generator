@@ -36,5 +36,21 @@ namespace NUnitTestProject
             // Assert
             Assert.AreEqual(expectedInvoiceSummary, invoiceSummary);
         }
+        // TC.3- GivenMultipleRides_ShouldReturnInvoiceSummaryWithAvg
+        [Test]
+        public void GivenMultipleRides_ShouldReturnInvoiceSummaryWithAvg()
+        {
+            // Arrange
+            invoiceGenerator = new InvoiceGenerator(RideType.NORMAL);
+            Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+            // Act
+            InvoiceSummary invoiceSummary = invoiceGenerator.CalculateAvgFare(rides);
+            // if both the objects are equal then get the same HashCode for both the objects
+            var resultHashCode = invoiceSummary.GetHashCode();
+            InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(30.0, 2, 15.0);
+            var resulExpectedHashCode = expectedInvoiceSummary.GetHashCode();
+            // Assert
+            Assert.AreEqual(expectedInvoiceSummary, invoiceSummary);
+        }
     }
 }
