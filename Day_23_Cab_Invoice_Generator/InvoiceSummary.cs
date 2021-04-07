@@ -17,6 +17,13 @@ namespace Day_23_Cab_Invoice_Generator
             this.totalFare = totalFare;
             this.length = length;
         }
+        // Parameterised constructor to initialise the data attributes with the user defined values to find Average Fare
+        public InvoiceSummary(double totalFare, int length, double averageFare)
+        {
+            this.totalFare = totalFare;
+            this.length = length;
+            this.averageFare = averageFare;
+        }
         // Over riding the Equals method so as to match the value of the object references
         // Default Equals method comapre the reference of the objects and not the values
         public override bool Equals(object obj)

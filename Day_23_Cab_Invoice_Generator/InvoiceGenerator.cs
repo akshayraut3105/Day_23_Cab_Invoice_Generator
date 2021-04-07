@@ -75,5 +75,33 @@ namespace Day_23_Cab_Invoice_Generator
             // returning invoice summary which has total fare and number of rides
             return new InvoiceSummary(totalFare, rides.Length);
         }
+        // UC3- Method to calculate Average Fare
+        public InvoiceSummary CalculateAvgFare(Ride[] rides)
+        {
+            double totalFare = 0;
+            /// Adding a variable to compute average fare
+            double averageFare = 0;
+            /// Exception handling for the invalid  distance and time
+            try
+            {
+                // Using foreach loop to take one ride each time
+                foreach (Ride ride in rides)
+                {
+                    // returning total fare
+                    totalFare += this.CalculateFare(ride.distance, ride.time);
+                }
+                // Computing average fare = (total fare/ number of rides)
+                averageFare = (totalFare / rides.Length);
+            }
+            catch (CabInvoiceException)
+            {
+                if (rides == null)
+                {
+                    throw new CabInvoiceException(CabInvoiceException.ExceptionType.NULL_RIDES, "Rides passed are null..");
+                }
+            }
+            // Returning the invoice summary with average fare too
+            return new InvoiceSummary(totalFare, rides.Length, averageFare);
+        }
     }
 }
