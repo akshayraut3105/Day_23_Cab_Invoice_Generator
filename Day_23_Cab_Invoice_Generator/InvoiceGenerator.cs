@@ -8,7 +8,7 @@ namespace Day_23_Cab_Invoice_Generator
     {
         // Declaring the object of the class RideType which has different  time and distance 
         public RideType rideType;
-        private readonly RideRepository rideRepository;
+        private readonly RideRepository rideRepository = new RideRepository();
         // Read-Only attributes acting as constant variable
         // to be initialised at run time using a parameterised constructor
         private readonly double MINIMUM_COST_PER_KM;
@@ -22,11 +22,30 @@ namespace Day_23_Cab_Invoice_Generator
         // Parameterised constructor of the Invoice Generator Class
         public InvoiceGenerator(RideType rideType)
         {
+            // Initialising the Ride Type
             this.rideType = rideType;
-            this.MINIMUM_COST_PER_KM = 10;
-            this.COST_PER_KM = 1;
-            this.MINIMUM_FARE = 5;
-            this.rideRepository = new RideRepository();
+            try
+            {
+                // Initialising hte default value for the NORMAL Ride Type
+                if (rideType.Equals(RideType.NORMAL))
+                {
+                    this.MINIMUM_COST_PER_KM = 10;
+                    this.COST_PER_KM = 1;
+                    this.MINIMUM_FARE = 5;
+                }
+                // Initialising the default value for the PREMIUM Ride Type
+                else if (rideType.Equals(RideType.PREMIUM))
+                {
+                    this.MINIMUM_COST_PER_KM = 15;
+                    this.COST_PER_KM = 2;
+                    this.MINIMUM_FARE = 20;
+                }
+            }
+            // Catching the Custom Exception for the invalid ride type
+            catch (CabInvoiceException)
+            {
+                throw new CabInvoiceException(CabInvoiceException.ExceptionType.INVALID_RIDETYPE, "The Passed Ride Type is Not Valid");
+            }
         }
         // Method to Compute the total fare of the cab journey when passed eith distance and time
         public double CalculateFare(double distance, int time)
@@ -132,7 +151,6 @@ namespace Day_23_Cab_Invoice_Generator
             {
                 // Calculating Average fare
                 double averageFare = (Convert.ToDouble(this.CalculateFare(rideRepository.GetRides(userID)))) / (rideRepository.GetRides(userID).Length);
-                // returning invoice summary
                 return new InvoiceSummary(Convert.ToDouble(this.CalculateFare(rideRepository.GetRides(userID))), rideRepository.GetRides(userID).Length, averageFare);
             }
             // Catching the custom exception of invalid user id
